@@ -1,0 +1,171 @@
+import React, { Component } from 'react';
+import styled, {keyframes} from 'styled-components';
+import { fadeInDown, fadeInUp, fadeOutUp, flipInY, flipOutY } from 'react-animations';
+import Tile from './components/tile';
+import Row from './components/row';
+import Board from './components/board';
+
+const Title = styled.h1`
+  animation: 0.7s ${keyframes`${fadeInUp}`};
+`;
+const Draw = styled.h1`
+  width:400px;
+  margin-left:auto;
+  margin-right:auto;
+`;
+const DrawIn = Draw.extend`
+  animation: 1s ${keyframes`${flipInY}`};
+`;
+const DrawOut = Draw.extend`
+  animation: 1s ${keyframes`${flipOutY}`};
+`;
+
+const Winner = styled.h1`
+  color: ${props => props.v === 'O'
+    ? 'var(--color-primary)'
+    : 'var(--color-highlight)'};
+`;
+const WinnerIn = Winner.extend`
+  animation: 0.7s ${keyframes`${fadeInDown}`};
+`;
+const WinnerOut = Winner.extend`
+  animation: 0.7s ${keyframes`${fadeOutUp}`};
+`;
+
+const Button = styled.span`
+  font-size:1rem;
+  padding:3px;
+  margin:0 10px;
+  border:2px solid var(--color-highlight);
+  color: var(--color-highlight);
+  cursor:pointer;
+`;
+
+const defaultState = {
+  tiles: [
+    null,null,null,
+    null,null,null,
+    null,null,null
+  ],
+  restart: false,
+  moves: 0,
+  gameOver: null
+}
+
+const updateTile = (id, value) => {
+  return (state, props) => {
+    let tiles = Object.assign({}, state.tiles)
+    if (tiles[id]) return;
+    tiles[id] = value;
+    return { 
+      tiles: tiles, 
+      moves: state.moves + 1,
+      gameOver: isGameOver(tiles)
+    }
+  }
+}
+
+const isGameOver = tiles => {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (tiles[a] && tiles[a] === tiles[b] && tiles[a] === tiles[c]) {
+      return [a,b,c]
+    }
+  }
+  return null;
+}
+
+class App extends Component {
+
+  constructor() {
+    super();
+    this.state = Object.assign({}, defaultState);
+    this.makeTile = this.makeTile.bind(this);
+    this.restart = this.restart.bind(this);
+  }
+
+  restart() {
+    this.setState({restart: true})
+    setTimeout(() => {
+      this.setState(defaultState);
+    }, 700)
+  }
+
+  gameIsOver(winner, moves) {
+    if (winner) {
+      let player = this.state.tiles[winner[0]]
+      let W = (this.state.restart) ? WinnerOut : WinnerIn;
+      return (
+        <W v={player}>
+          Player {player} has won!
+          <Button onClick={this.restart}>Restart</Button>
+        </W>
+      );
+    } else if (moves > 8) {
+      let D = (this.state.restart) ? DrawOut : DrawIn;
+      return (
+        <D>
+          Draw!
+          <Button onClick={this.restart}>Restart</Button>
+        </D>
+      );
+    }
+    return <Title>Tic Tac Toe</Title>;
+  }
+
+  handleClick(id) {
+    if (this.state.gameOver) return;
+    this.setState(updateTile(id, (this.state.moves % 2) ? 'O': 'X'))
+  }
+
+  makeTile(id) {
+    let active = this.state.tiles[id];
+    let winner = (
+      this.state.gameOver && 
+      this.state.gameOver.indexOf(id) !== -1
+    ) ? true : false;
+    let draw = (!this.state.gameOver && this.state.moves > 8)
+      ? true : false;
+    let next = (this.state.moves % 2) ? 'O': 'X';
+    return <Tile 
+      key={id} 
+      id={id}
+      active={active} 
+      fadeOut={this.state.restart}
+      nextPlayer={next}
+      draw={draw}
+      winner={winner}
+      handleClick={id => this.handleClick(id)} 
+      />
+  }
+
+  makeRow(tiles) {
+    return <Row>{tiles.map(this.makeTile)}</Row>;
+  }
+
+
+  render() {
+    return (
+      <div>
+        {this.gameIsOver(this.state.gameOver, this.state.moves)}
+        <Board>
+          { this.makeRow([0,1,2]) }
+          { this.makeRow([3,4,5]) }
+          { this.makeRow([6,7,8]) }
+        </Board>
+      </div>
+    );
+  }
+}
+
+export default App;

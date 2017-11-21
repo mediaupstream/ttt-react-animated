@@ -1,0 +1,24 @@
+:root {
+  --color-primary:    #4ECDC4;
+  --color-secondary:  #FF6B6B;
+  --color-dark:       #556270;
+  --color-light:      #f3f3f3;
+  --color-accent:     #C7F464;
+  --color-highlight:  #C44D58;
+}
+
+body { 
+  text-align:center; 
+  color: var(--color-dark);
+  padding:0; 
+  margin:0; 
+}
+html {
+  padding:0;
+  margin:0;
+  background: var(--color-light);
+}
+
+h1, h2, h3, h4, h5, p, span, div, a, td, li {
+  font-family:"Helvetica Neue", Helvetica, sans-serif;
+}
