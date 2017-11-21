@@ -1,24 +1,92 @@
 :root {
-  --color-primary:    #4ECDC4;
-  --color-secondary:  #FF6B6B;
-  --color-dark:       #556270;
-  --color-light:      #f3f3f3;
-  --color-accent:     #C7F464;
-  --color-highlight:  #C44D58;
+  --color-primary: #93ba2f;
+  --color-secondary: #ff6b6b;
+  --color-dark: #556363;
+  --color-light: #f9f2e7;
+  --color-accent: #c7f464;
+  --color-highlight: #19aac4;
 }
 
-body { 
-  text-align:center; 
+body {
+  text-align: center;
   color: var(--color-dark);
-  padding:0; 
-  margin:0; 
+  padding: 0;
+  margin: 0;
 }
 html {
-  padding:0;
-  margin:0;
+  padding: 0;
+  margin: 0;
   background: var(--color-light);
 }
 
-h1, h2, h3, h4, h5, p, span, div, a, td, li {
-  font-family:"Helvetica Neue", Helvetica, sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+span,
+div,
+a,
+td,
+li {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+}
+
+
+#footer {
+  position:absolute;
+  bottom:14px;
+  left:16px;
+  font-size:12px;
+  opacity:0.7;
+  -webkit-transition: opacity 0.2s linear;
+  transition: opacity 0.2s linear;
+}
+#footer:hover {
+  opacity:1;
+}
+#footer a {
+  color:#a83f5c;
+  text-decoration:none;
+}
+#footer a:hover {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+
+  -webkit-animation-name: flash;
+  animation-name: flash;
+}
+#footer span {
+  font-size:8px;
+  padding:0 6px;
+}
+
+
+.github-corner:hover .octo-arm {
+  animation: octocat-wave 560ms ease-in-out;
+}
+@keyframes octocat-wave {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20%,
+  60% {
+    transform: rotate(-25deg);
+  }
+  40%,
+  80% {
+    transform: rotate(10deg);
+  }
+}
+@media (max-width: 500px) {
+  .github-corner:hover .octo-arm {
+    animation: none;
+  }
+  .github-corner .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
+  }
 }

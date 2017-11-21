@@ -5,13 +5,26 @@ import Tile from './components/tile';
 import Row from './components/row';
 import Board from './components/board';
 
-const Title = styled.h1`
-  animation: 0.7s ${keyframes`${fadeInUp}`};
-`;
-const Draw = styled.h1`
-  width:400px;
+const Header = styled.div`
+  display: flex;
+  width:480px;
   margin-left:auto;
   margin-right:auto;
+  // background-color: var(--color-secondary);
+`;
+
+const Title = styled.h1`
+  animation: 0.7s ${keyframes`${fadeInUp}`};
+  flex: 1 1 auto;
+  font-weight:200;
+  width:320px;
+`;
+const Draw = styled.h1`
+  margin-left:auto;
+  margin-right:auto;
+  flex: 1 1 auto;
+  font-weight:200;
+  width:320px;
 `;
 const DrawIn = Draw.extend`
   animation: 1s ${keyframes`${flipInY}`};
@@ -24,6 +37,9 @@ const Winner = styled.h1`
   color: ${props => props.v === 'O'
     ? 'var(--color-primary)'
     : 'var(--color-highlight)'};
+  flex: 1 1 auto;
+  font-weight:200;
+  width:320px;
 `;
 const WinnerIn = Winner.extend`
   animation: 0.7s ${keyframes`${fadeInDown}`};
@@ -34,11 +50,13 @@ const WinnerOut = Winner.extend`
 
 const Button = styled.span`
   font-size:1rem;
-  padding:3px;
-  margin:0 10px;
-  border:2px solid var(--color-highlight);
-  color: var(--color-highlight);
+  // border:2px solid var(--color-highlight);
+  color: var(--color-dark);
   cursor:pointer;
+  flex: 1 1 auto;
+  width:80px;
+  vertical-align:middle;
+  line-height:5rem;
 `;
 
 const defaultState = {
@@ -107,8 +125,7 @@ class App extends Component {
       let W = (this.state.restart) ? WinnerOut : WinnerIn;
       return (
         <W v={player}>
-          Player {player} has won!
-          <Button onClick={this.restart}>Restart</Button>
+          Player <strong>{player}</strong> wins!
         </W>
       );
     } else if (moves > 8) {
@@ -116,7 +133,6 @@ class App extends Component {
       return (
         <D>
           Draw!
-          <Button onClick={this.restart}>Restart</Button>
         </D>
       );
     }
@@ -130,6 +146,7 @@ class App extends Component {
 
   makeTile(id) {
     let active = this.state.tiles[id];
+    let gameOver = this.state.gameOver ? true : false;
     let winner = (
       this.state.gameOver && 
       this.state.gameOver.indexOf(id) !== -1
@@ -144,6 +161,7 @@ class App extends Component {
       fadeOut={this.state.restart}
       nextPlayer={next}
       draw={draw}
+      gameOver={gameOver}
       winner={winner}
       handleClick={id => this.handleClick(id)} 
       />
@@ -157,12 +175,21 @@ class App extends Component {
   render() {
     return (
       <div>
-        {this.gameIsOver(this.state.gameOver, this.state.moves)}
+        <Header>
+          <Button>{this.state.moves} moves</Button>
+          {this.gameIsOver(this.state.gameOver, this.state.moves)}
+          <Button onClick={this.restart}>Restart</Button>
+        </Header>
         <Board>
           { this.makeRow([0,1,2]) }
           { this.makeRow([3,4,5]) }
           { this.makeRow([6,7,8]) }
         </Board>
+        <div id="footer">
+          Created by <a href="http://mediaupstream.com">@derekanderson</a>
+          <span> | </span>
+          Source on <a href="https://github.com/mediaupstream/ttt-react-animated">Github.com</a>
+        </div>
       </div>
     );
   }
