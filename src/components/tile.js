@@ -16,6 +16,7 @@ const PlayerTile = EmptyTile.extend`
 
 const PlayerFade = PlayerTile.extend`
   animation: 1s ${keyframes`${zoomOut}`};
+  animation-delay: ${props => props.delay}s;
 `;
 
 const PlayerWinner = PlayerTile.extend`
@@ -67,7 +68,7 @@ const T = ({fadeOut, draw, winner, gameOver, active}) => {
 const Tile = ({id, active, fadeOut, nextPlayer, draw, winner, gameOver, handleClick}) => {
   const P = T({fadeOut, draw, winner, active, gameOver});
   return (<Box v={nextPlayer} onClick={() => handleClick(id)}>
-            <P v={active}>{ active }</P>
+            <P v={active} delay={id*0.05}>{ active }</P>
           </Box>);
 }
 
