@@ -14,6 +14,7 @@ const PlayerTile = EmptyTile.extend`
 `;
 
 const PlayerFade = PlayerTile.extend`
+  transform: rotate(90deg);
   animation: 1s ${keyframes`${zoomOut}`};
   animation-delay: ${props => props.delay}s;
 `;
