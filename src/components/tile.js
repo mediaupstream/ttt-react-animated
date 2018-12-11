@@ -3,9 +3,8 @@ import styled, {keyframes} from 'styled-components';
 import { zoomOut, headShake, rubberBand } from 'react-animations';
 
 const EmptyTile = styled.div`
-  font-family: ${props => props.v === 'O'
-    ? 'Futura, "Trebuchet MS", Arial, sans-serif'
-    : '"Gill Sans", "Gill Sans MT", Calibri, sans-serif'};
+  font-weight:100;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
   color: ${props => props.v === 'O'
     ? 'var(--color-primary)'
     : 'var(--color-highlight)'};
@@ -33,8 +32,8 @@ const Box = styled.div`
   vertical-align: middle;
   width: 160px;
   padding: 70px 0;
-  border-right: 6px solid var(--color-dark);
-  border-bottom: 6px solid var(--color-dark);
+  border-right: 2px solid var(--color-dark);
+  border-bottom: 2px solid var(--color-dark);
   cursor: pointer;
   line-height:0px;
   &:last-child {
@@ -42,9 +41,7 @@ const Box = styled.div`
   }
   &:hover ${EmptyTile}:before {
     content: "${props => props.v}";
-    font-family: ${props => props.v === 'O'
-      ? 'Futura, "Trebuchet MS", Arial, sans-serif'
-      : '"Gill Sans", "Gill Sans MT", Calibri, sans-serif'};
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
     display:block;
     pointer-events:none;
     position:relative;
@@ -52,6 +49,7 @@ const Box = styled.div`
     vertical-align:center;
     font-size:5rem;
     color:#546363;
+    font-weight:100;
     opacity:0.5;
   }
 `;

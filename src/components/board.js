@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const Board = styled.div`
   text-align: center;
-  margin: 80px auto;
+  margin: 40px auto;
   width:480px;
 `;
 

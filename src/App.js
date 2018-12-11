@@ -10,7 +10,7 @@ const Header = styled.div`
   width:480px;
   margin-left:auto;
   margin-right:auto;
-  // background-color: var(--color-secondary);
+  // background-color: #fff;
 `;
 
 const Title = styled.h1`
@@ -71,16 +71,20 @@ const defaultState = {
 }
 
 const updateTile = (id, value) => {
-  return (state, props) => {
+  return state => {
     let tiles = Object.assign({}, state.tiles)
     if (tiles[id]) return;
     tiles[id] = value;
-    return { 
-      tiles: tiles, 
+    return {
+      tiles: tiles,
       moves: state.moves + 1,
       gameOver: isGameOver(tiles)
     }
   }
+}
+
+const resetBg = () => {
+  document.body.classList.remove('p1', 'p2')
 }
 
 const isGameOver = tiles => {
@@ -105,21 +109,19 @@ const isGameOver = tiles => {
 
 class App extends Component {
 
-  constructor() {
-    super();
-    this.state = Object.assign({}, defaultState);
-    this.makeTile = this.makeTile.bind(this);
-    this.restart = this.restart.bind(this);
+  state = {
+    ...defaultState
   }
 
-  restart() {
+  restart = () => {
     this.setState({restart: true})
+    resetBg()
     setTimeout(() => {
       this.setState(defaultState);
     }, 700)
   }
 
-  gameIsOver(winner, moves) {
+  gameIsOver = (winner, moves) => {
     if (winner) {
       let player = this.state.tiles[winner[0]]
       let W = (this.state.restart) ? WinnerOut : WinnerIn;
@@ -129,6 +131,7 @@ class App extends Component {
         </W>
       );
     } else if (moves > 8) {
+      setTimeout(resetBg, 650)
       let D = (this.state.restart) ? DrawOut : DrawIn;
       return (
         <D>
@@ -139,40 +142,57 @@ class App extends Component {
     return <Title>Tic Tac Toe</Title>;
   }
 
-  handleClick(id) {
-    if (this.state.gameOver) return;
-    this.setState(updateTile(id, (this.state.moves % 2) ? 'O': 'X'))
+  handleClick = id => {
+    if (this.state.gameOver) return
+    const b = document.body.classList
+    const p = this.state.moves % 2 ? 'O': 'X'
+    const s = updateTile(id, p)(this.state)
+    if (!s) return
+    this.setState(s, () => {
+      if (this.state.gameOver) {
+        resetBg()
+        b.add( p == 'X' ? 'p1' : 'p2')
+        return
+      }
+      if (p == 'X') {
+        b.add('p2')
+        b.remove('p1')
+      } else {
+        b.add('p1')
+        b.remove('p2')
+      }
+    })
   }
 
-  makeTile(id) {
+  makeTile = id => {
     let active = this.state.tiles[id];
     let gameOver = this.state.gameOver ? true : false;
     let winner = (
-      this.state.gameOver && 
+      this.state.gameOver &&
       this.state.gameOver.indexOf(id) !== -1
     ) ? true : false;
     let draw = (!this.state.gameOver && this.state.moves > 8)
       ? true : false;
     let next = (this.state.moves % 2) ? 'O': 'X';
-    return <Tile 
-      key={id} 
+    return <Tile
+      key={id}
       id={id}
-      active={active} 
+      active={active}
       fadeOut={this.state.restart}
       nextPlayer={next}
       draw={draw}
       gameOver={gameOver}
       winner={winner}
-      handleClick={id => this.handleClick(id)} 
+      handleClick={id => this.handleClick(id)}
       />
   }
 
-  makeRow(tiles) {
+  makeRow = tiles => {
     return <Row>{tiles.map(this.makeTile)}</Row>;
   }
 
 
-  render() {
+  render = () => {
     return (
       <div>
         <Header>
