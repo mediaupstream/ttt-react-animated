@@ -7,4 +7,3 @@ Built with
 - [React Animations](https://github.com/FormidableLabs/react-animations)
 
 <img src="public/preview.png" width="350">
-![Preview](public/preview.png)
