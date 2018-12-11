@@ -1,7 +1,8 @@
 {
   "name": "ttt-react-animated",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "private": true,
+  "homepage": "http://mediaupstream.github.io/ttt-react-animated",
   "dependencies": {
     "node-sass-chokidar": "^0.0.3",
     "react": "^16.1.1",
@@ -15,6 +16,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
   "devDependencies": {
